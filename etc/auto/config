@@ -29,12 +29,12 @@ lb config noauto \
     --checksums md5 \
     --mirror-bootstrap "$MIRROR_URL" \
     --parent-mirror-bootstrap "$MIRROR_URL" \
-    --mirror-chroot-security "http://security.ubuntu.com/ubuntu/" \
-    --parent-mirror-chroot-security "http://security.ubuntu.com/ubuntu/" \
-    --mirror-binary-security "http://security.ubuntu.com/ubuntu/" \
-    --parent-mirror-binary-security "http://security.ubuntu.com/ubuntu/" \
-    --mirror-binary "http://archive.ubuntu.com/ubuntu/" \
-    --parent-mirror-binary "http://archive.ubuntu.com/ubuntu/" \
+    --mirror-chroot-security "http://ports.ubuntu.com/ubuntu-ports/" \
+    --parent-mirror-chroot-security "http://ports.ubuntu.com/ubuntu-ports/" \
+    --mirror-binary-security "http://ports.ubuntu.com/ubuntu-ports/" \
+    --parent-mirror-binary-security "http://ports.ubuntu.com/ubuntu-ports/" \
+    --mirror-binary "http://ports.ubuntu.com/ubuntu-ports/" \
+    --parent-mirror-binary "http://ports.ubuntu.com/ubuntu-ports/" \
     --keyring-packages ubuntu-keyring \
     --apt-options "--yes --option Acquire::Retries=2 --option Acquire::http::Timeout=45" \
     --cache-packages false \
