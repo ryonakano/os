@@ -1,0 +1,8 @@
+#!/bin/sh
+# Description: Install greeter deb
+
+echo "P: Begin executing install-greeter chroot hook..."
+
+wget https://github.com/ryonakano/junk/raw/refs/heads/greeter-main-settingsdaemon/io.elementary.greeter_8.0.0_amd64.deb
+apt-get install --allow-downgrades -y ./io.elementary.greeter_8.0.0_amd64.deb
+rm -f ./io.elementary.greeter_8.0.0_amd64.deb
