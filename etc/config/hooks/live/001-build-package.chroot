@@ -1,0 +1,35 @@
+#!/bin/bash
+# Description: Build and install package from a git repository
+
+echo "P: Begin executing build package chroot hook..."
+
+readonly DEPS=(
+git gcc
+)
+readonly BUILD_DEPS=(
+desktop-file-utils gettext libadwaita-1-dev libdistinst-dev libgee-0.8-dev libgranite-7-dev libgtk-4-dev libxkbregistry-dev libjson-glib-dev libpantheon-wayland-1-dev libpwquality-dev meson valac
+)
+readonly REPO_URL="https://github.com/elementary/installer.git"
+readonly REPO_BRANCH="david_diskbar_fixups"
+readonly CLONE_DIR=$(mktemp -d)
+
+NEEDS_UNINSTALL=""
+for d in ${BUILD_DEPS[@]}; do
+	IS_INSTALLED=$(apt list --installed | awk -F/ '{ print $1 }' | grep -E "^$d\$")
+	if [ -z "$IS_INSTALLED" ]; then
+		NEEDS_UNINSTALL="$NEEDS_UNINSTALL $d"
+	fi
+done
+
+apt-get install --no-install-recommends -f -q -y ${DEPS[@]} gettext
+git clone --depth 1 $REPO_URL --single-branch --branch $REPO_BRANCH $CLONE_DIR
+pushd $CLONE_DIR
+
+apt-get install --no-install-recommends -f -q -y ${BUILD_DEPS[@]}
+meson setup builddir --prefix=/usr
+ninja -C builddir
+ninja -C builddir install
+
+apt-get autoremove --purge -f -q -y ${DEPS[@]} $NEEDS_UNINSTALL
+popd # CLONE_DIR
+rm -rf $CLONE_DIR
